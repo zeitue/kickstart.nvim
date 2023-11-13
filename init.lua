@@ -251,6 +251,16 @@ vim.o.mouse = 'a'
 -- Disable mouse horizontal scroll
 vim.o.mousescroll = "ver:6,hor:0"
 
+-- Allow arrow movement to wrap lines
+vim.opt.whichwrap:append {
+  ['<'] = true,
+  ['>'] = true,
+  ['['] = true,
+  [']'] = true,
+  h = true,
+  l = true,
+}
+
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
