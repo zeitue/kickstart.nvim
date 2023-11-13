@@ -236,6 +236,9 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+-- Disable startup message
+vim.o.shortmess=vim.o.shortmess.."I"
+
 -- Set highlight on search
 vim.o.hlsearch = false
 
