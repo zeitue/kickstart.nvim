@@ -251,6 +251,9 @@ vim.o.mouse = 'a'
 -- Disable mouse horizontal scroll
 vim.o.mousescroll = "ver:6,hor:0"
 
+-- Allow the cursor to be after the final character of the line
+vim.o.virtualedit = vim.o.virtualedit .. "onemore"
+
 -- Allow arrow movement to wrap lines
 vim.opt.whichwrap:append {
   ['<'] = true,
