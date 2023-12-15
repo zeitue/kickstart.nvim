@@ -160,7 +160,39 @@ require('lazy').setup({
       vim.cmd.colorscheme 'catppuccin-mocha'
     end,
   },
-
+  {
+    -- codeium for copilot functionality
+    'Exafunction/codeium.vim',
+    config = function()
+      vim.fn['CodeiumEnable']()
+      vim.fn['CodeiumAuto']()
+      vim.keymap.set('i', '<M-a>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+      vim.keymap.set('i', '<M-]>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+      vim.keymap.set('i', '<M-[>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+      vim.keymap.set('i', '<M-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+      vim.keymap.set('i', '<M-\\>', function() return vim.fn['codeium#Complete']() end, { expr = true })
+      vim.keymap.set('n', '<leader>co', function()
+        local r
+        if vim.g.codeium_enabled then
+          r = vim.fn['CodeiumDisable']()
+        else
+          r = vim.fn['CodeiumEnable']()
+        end
+        vim.cmd('redraw!')
+        return r
+      end, { expr = true, desc = 'Toggle codeium on/off' })
+      vim.keymap.set('n', '<leader>cm', function()
+        local r
+        if vim.g.codeium_manual then
+          r = vim.fn['CodeiumAuto']()
+        else
+          r = vim.fn['CodeiumManual']()
+        end
+        vim.cmd('redraw!')
+        return r
+      end, { expr = true, desc = 'Toggle codeium auto/manual' })
+    end
+  },
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -171,6 +203,28 @@ require('lazy').setup({
         theme = 'catppuccin',
         component_separators = '|',
         section_separators = '',
+      },
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_c = { 'filename' },
+        lualine_x = {
+          {
+            'vim.fn["codeium#GetStatusString"]()',
+            fmt = function(str)
+              local mode
+              if vim.g.codeium_manual then
+                mode = ' | M'
+              else
+                mode = ' | A'
+              end
+              return '{…} ' .. str:lower():match("^%s*(.-)%s*$") .. mode
+            end
+          },
+          'encoding', 'fileformat', 'filetype'
+        },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' }
       },
     },
   },
