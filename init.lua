@@ -212,11 +212,13 @@ require('lazy').setup({
           {
             'vim.fn["codeium#GetStatusString"]()',
             fmt = function(str)
-              local mode
-              if vim.g.codeium_manual then
-                mode = ' | M'
-              else
-                mode = ' | A'
+              local mode = ''
+              if vim.g.codeium_enabled then
+                if vim.g.codeium_manual then
+                  mode = ' | M'
+                else
+                  mode = ' | A'
+                end
               end
               return '{…} ' .. str:lower():match("^%s*(.-)%s*$") .. mode
             end
